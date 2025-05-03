@@ -1,23 +1,20 @@
-defmodule Animal do
-  def start_link(name) do
-    spawn_link(fn -> loop(name) end)
-  end
+defmodule Main do
+  def run do
+    a1 = Dog.start_link("Rex")
+    a2 = Cat.start_link("Whiskers")
 
-  defp loop(name) do
+    send(a1, {:speak, self()})
+    send(a2, {:speak, self()})
+
     receive do
-      {:get_name, caller} ->
-        send(caller, {:name, name})
-        loop(name)
-
-      {:speak, _caller} ->
-        IO.puts("#{name} says: ???")  
-        loop(name)
-
-      :stop ->
-        :ok
-
-      _ ->
-        loop(name)
+      {:spoken, msg} -> IO.puts(msg)
     end
+
+    receive do
+      {:spoken, msg} -> IO.puts(msg)
+    end
+
+    send(a1, :stop)
+    send(a2, :stop)
   end
 end
