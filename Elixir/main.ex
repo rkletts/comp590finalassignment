@@ -10,3 +10,5 @@ defmodule Main do
     send(a2, :stop)
   end
 end
+
+Main.run()
