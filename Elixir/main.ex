@@ -6,10 +6,7 @@ defmodule Main do
     send(a1, {:speak, self()})
     send(a2, {:speak, self()})
 
-    # Optionally stop the processes
     send(a1, :stop)
     send(a2, :stop)
   end
 end
-
-Main.run()
